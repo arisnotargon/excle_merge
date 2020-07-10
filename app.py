@@ -27,7 +27,7 @@ def copy_cell(source_cell:openpyxl.cell.cell,target_cell:openpyxl.cell.cell):
 if __name__ == "__main__":
     work_dir = 'input'
     list = os.listdir(work_dir)
-    out_wb = openpyxl.load_workbook('output/06.xlsx')
+    out_wb = openpyxl.load_workbook('output/temp.xlsx')
     # out_sheet = out_wb[out_wb.sheetnames[0]]
     out_sheet = out_wb.active
     out_line_no = 5
