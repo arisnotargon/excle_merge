@@ -5,7 +5,8 @@ import re
 import argparse
 from copy import copy
 
-def copy_cell(source_cell:openpyxl.cell.cell,target_cell:openpyxl.cell.cell):
+
+def copy_cell(source_cell: openpyxl.cell.cell, target_cell: openpyxl.cell.cell):
     target_cell.data_type = source_cell.data_type
     target_cell.value = source_cell.value
     target_cell.fill = copy(source_cell.fill)
@@ -24,32 +25,50 @@ def copy_cell(source_cell:openpyxl.cell.cell,target_cell:openpyxl.cell.cell):
     if source_cell.comment:
         target_cell.comment = copy(source_cell.comment)
 
+
 if __name__ == "__main__":
-    work_dir = 'input'
-    list = os.listdir(work_dir)
+    work_dir = '06_input'
+    outname = 'output'+os.sep+'06_out.xlsx'
+    filelist = os.listdir(work_dir)
     out_wb = openpyxl.load_workbook('output/temp.xlsx')
     # out_sheet = out_wb[out_wb.sheetnames[0]]
     out_sheet = out_wb.active
     out_line_no = 5
 
-    for inputfname in list:
+    for inputfname in filelist:
         if inputfname[-5:] == '.xlsx':
+            print(inputfname)
+            id1 = inputfname.replace('.xlsx', '')
+            id1 = id1[id1.index('】')+1 : id1.rindex('【')]
+            # 源文件名去掉开头放id1
             in_wb = openpyxl.load_workbook(work_dir + os.sep + inputfname)
             in_sheet = in_wb.active
             in_max_row_no = in_sheet.max_row
             for row_no in range(5, in_max_row_no + 1):
                 judge_cell = in_sheet.cell(row_no, 1)
+
+                out_sheet.cell(out_line_no,2).value = id1
+
                 if judge_cell.value != None:
-                    copy_cell(in_sheet.cell(row_no, 2),out_sheet.cell(out_line_no,4))
-                    copy_cell(in_sheet.cell(row_no, 3),out_sheet.cell(out_line_no,5))
-                    copy_cell(in_sheet.cell(row_no, 4),out_sheet.cell(out_line_no,7))
-                    copy_cell(in_sheet.cell(row_no, 5),out_sheet.cell(out_line_no,8))
-                    copy_cell(in_sheet.cell(row_no, 6),out_sheet.cell(out_line_no,9))
-                    copy_cell(in_sheet.cell(row_no, 7),out_sheet.cell(out_line_no,10))
-                    copy_cell(in_sheet.cell(row_no, 8),out_sheet.cell(out_line_no,11))
-                    copy_cell(in_sheet.cell(row_no, 9),out_sheet.cell(out_line_no,12))
-                    copy_cell(in_sheet.cell(row_no, 10),out_sheet.cell(out_line_no,13))
+                    copy_cell(in_sheet.cell(row_no, 2),
+                              out_sheet.cell(out_line_no, 4))
+                    copy_cell(in_sheet.cell(row_no, 3),
+                              out_sheet.cell(out_line_no, 5))
+                    copy_cell(in_sheet.cell(row_no, 4),
+                              out_sheet.cell(out_line_no, 7))
+                    copy_cell(in_sheet.cell(row_no, 5),
+                              out_sheet.cell(out_line_no, 8))
+                    copy_cell(in_sheet.cell(row_no, 6),
+                              out_sheet.cell(out_line_no, 9))
+                    copy_cell(in_sheet.cell(row_no, 7),
+                              out_sheet.cell(out_line_no, 10))
+                    copy_cell(in_sheet.cell(row_no, 8),
+                              out_sheet.cell(out_line_no, 11))
+                    copy_cell(in_sheet.cell(row_no, 9),
+                              out_sheet.cell(out_line_no, 12))
+                    copy_cell(in_sheet.cell(row_no, 10),
+                              out_sheet.cell(out_line_no, 13))
 
                     out_line_no += 1
 
-    out_wb.save('output'+os.sep+'out.xlsx')
+    out_wb.save(outname)
